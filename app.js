@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp'); // http parameter pollution
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const compression = require('compression');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -94,7 +95,7 @@ app.use(
 );
 
 // Development logging
-console.log(process.env.NODE_ENV);
+// console.log(process.env.NODE_ENV);
 if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
@@ -135,6 +136,9 @@ app.use(hpp({
 
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
+
+// will compress all the text response sent to the clients
+app.use(compression());
 
 // Test middleware
 app.use((req, res, next) => {
