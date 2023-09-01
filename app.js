@@ -26,12 +26,22 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
+// Enable CORS for all websites
+app.use(cors());
+// Access-Control-Allow-Origin *
+// let's say if our backend is at api.natours.com and front-end at natours.com
+// app.use(cors({
+//     origin: 'https://www.natours.com'
+// })); // ---> these works for simple(get and post) requests only but not for put and patch request
+// what is pre-flight phase?
+
+app.options('*', cors());
+// app.options('/api/v1/tours/:id', cors()); // only allow tours to be deleted or updated
+
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// Enable CORS for all websites
-app.use(cors());
 
 // Custom middleware to handle preflight requests
 app.options('*', cors());
