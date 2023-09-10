@@ -5,6 +5,27 @@ import { showAlert } from './alerts';
 // export modules in javaScript with ES6
 // node.js uses common js for export import functionality
 
+export const signup = async (data) => {
+    try{
+        const res = await axios({
+            method: 'POST',
+            url: '/api/v1/users/signup', // since website and api are hosted on same server, hence relative path works
+            data,
+            withCredentials: true
+        });
+
+        if(res.data.status === 'success') {
+            showAlert('success', 'User registration successfull! Please check your email and activate your account!', 5);
+            // window.setTimeout(() => {
+            //     location.assign('/');
+            // }, 1500); // refresh after 1500 ms
+        }
+        // console.log(res);
+    } catch(err) {
+        showAlert('error', err.response.data.message);
+    }
+};
+
 export const login = async (email, password) => {
     try{
         const res = await axios({
