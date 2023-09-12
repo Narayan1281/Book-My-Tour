@@ -45,7 +45,7 @@ exports.signup = catchAsync(async (req, res, next) => {
         role: req.body.role
     });
 
-    const url = `${req.protocol}://${req.get('host')}/me`;
+    const url = `${req.protocol}://${req.get('host')}/login`;
     // console.log(url);
     await new Email(newUser, url).sendWelcome();
 
@@ -171,9 +171,15 @@ exports.restrictTo = (...roles) => {
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
     // 1) Get user based on POSTed email
+    const confirmMessage = "Activate your account by clicking the link in your registered email. If you don't receive the email, your account is either not active or doesn't exist.";
+
     const user = await User.findOne({ email: req.body.email });
     if(!user) {
-        return next(new AppError('There is no user with that email address.', 404));
+        // do not send specific error message if email does not exist
+        return res.status(200).json({
+            status: 'success',
+            message: confirmMessage
+        });
     }
 
     // 2) Generate the random reset token
@@ -182,12 +188,13 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
     // 3) Send it to user's email
     try {
-        const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
+        // const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`; // functionality is not available via postman
+        const resetURL = `${req.protocol}://${req.get('host')}/resetPassword/${resetToken}`;
         await new Email(user, resetURL).sendPasswordReset();
 
         res.status(200).json({
             status: 'success',
-            message: 'Token sent to email!'
+            message: confirmMessage
         });
     } catch(err) {
         user.passwordResetToken = undefined;

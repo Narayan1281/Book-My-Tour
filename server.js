@@ -11,7 +11,7 @@ process.on('uncaughtException', err => {
 const app = require('./app');
 
 
-const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
+const DB = process.env.DATABASE?.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
 
 mongoose.set('strictQuery', true); // inorder to suppress warnings
 

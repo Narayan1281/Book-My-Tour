@@ -65,6 +65,18 @@ exports.getAccount = (req, res) => {
     });
 };
 
+exports.forgotPassword = (req, res) => {
+    res.status(200).render('forgotPassword', {
+        title: 'Account ecovery'
+    });
+};
+
+exports.resetPassword = (req, res) => {
+    res.status(200).render('resetPassword', {
+        title: 'Reset your password'
+    })
+}
+
 exports.getMyTours = catchAsync(async (req, res, next) => {
     // can also be implemented using virtual populate method
     // 1) Find all bookings
