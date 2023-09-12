@@ -171,7 +171,7 @@ exports.restrictTo = (...roles) => {
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
     // 1) Get user based on POSTed email
-    const confirmMessage = "Activate your account by clicking the link in your registered email. If you don't receive the email, your account is either not active or doesn't exist.";
+    const confirmMessage = "Activate your account by clicking the link in your registered email.";
 
     const user = await User.findOne({ email: req.body.email });
     if(!user) {
@@ -189,7 +189,8 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     // 3) Send it to user's email
     try {
         // const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`; // functionality is not available via postman
-        const resetURL = `${req.protocol}://${req.get('host')}/resetPassword/${resetToken}`;
+        // we need to send query string for smooth front-end implementation
+        const resetURL = `${req.protocol}://${req.get('host')}/resetPassword?token=${resetToken}`;
         await new Email(user, resetURL).sendPasswordReset();
 
         res.status(200).json({

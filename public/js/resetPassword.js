@@ -15,3 +15,20 @@ export const sendResetLink = async (email) => {
         showAlert('error', err.response.data.message, 15);
     }
 };
+
+export const resetPassword = async (data) => {
+    try {
+        const res = await axios({
+            method: 'PATCH',
+            url: `api/v1/users/resetPassword/${data?.resetToken}`,
+            data
+        });
+
+        if(res.data.status === 'success') {
+            showAlert('success', "Password reset successful! Login to book tours.", 10);
+        }
+
+    } catch (err) {
+        showAlert('error', err.response.data.message, 5);
+    }
+}

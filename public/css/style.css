@@ -108,7 +108,11 @@ body {
   box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
 }
 .alert--success {
-  background-color: #20bf6b;
+  /*some of the nice colors: (from vfs global)*/
+  /* bg-color: #d1ecf1 
+    color: #0c5460;
+  */
+  background-color:  #20bf6b; 
 }
 .alert--error {
   background-color: #eb4d4b;

@@ -20,7 +20,7 @@ router.get('/login', authController.isLoggedIn, viewsController.getLoginForm);
 router.get('/me', authController.protect, viewsController.getAccount);
 router.get('/my-tours', authController.protect, viewsController.getMyTours);
 router.get('/forgotPassword', viewsController.forgotPassword);
-router.get('/resetPassword/:token', viewsController.resetPassword);
+router.get('/resetPassword', viewsController.resetPassword);
 
 // update user data using url-encoded forms
 router.post('/submit-user-data', authController.protect, viewsController.updateUserData);

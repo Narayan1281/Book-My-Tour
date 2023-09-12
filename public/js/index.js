@@ -2,7 +2,7 @@
 import { displayMap } from './mapbox';
 import { login, logout } from './login';  
 import { updateSettings } from './updateSettings';
-import { sendResetLink } from './resetPassword';
+import { sendResetLink, resetPassword } from './resetPassword';
 import { bookTour } from './stripe';
 import { showAlert } from './alerts';
 
@@ -77,9 +77,13 @@ if (resetPasswordForm)
 {
     resetPasswordForm.addEventListener('submit', e => {
         e.preventDefault();
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const resetToken = urlParams.get('token');
         const password = document.getElementById('password').value;
         const passwordConfirm = document.getElementById('password-confirm').value;
-        console.log(password, passwordConfirm);
+        // console.log(password, passwordConfirm);
+        resetPassword({password, passwordConfirm, resetToken});
     })
 }
 
