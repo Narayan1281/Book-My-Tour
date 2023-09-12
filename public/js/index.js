@@ -2,6 +2,7 @@
 import { displayMap } from './mapbox';
 import { login, signup, logout } from './login';  
 import { updateSettings } from './updateSettings';
+import { sendResetLink, resetPassword } from './resetPassword';
 import { bookTour } from './stripe';
 import { showAlert } from './alerts';
 
@@ -10,6 +11,8 @@ const mapBox = document.getElementById('map');
 const signUpForm = document.querySelector('.form--signup');
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
+const forgotPasswordForm = document.querySelector('.form--identify');
+const resetPasswordForm = document.querySelector('.form--resetPassword');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 const bookBtn = document.getElementById('book-tour');
@@ -74,6 +77,31 @@ if (userPasswordForm)
         document.getElementById('password').value = '';
         document.getElementById('password-confirm').value = '';
     });
+
+if (forgotPasswordForm)
+{
+    forgotPasswordForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        // console.log(email);
+        sendResetLink(email);
+        // document.getElementById('email').value = '';
+    })
+}
+
+if (resetPasswordForm)
+{
+    resetPasswordForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const resetToken = urlParams.get('token');
+        const password = document.getElementById('password').value;
+        const passwordConfirm = document.getElementById('password-confirm').value;
+        // console.log(password, passwordConfirm);
+        resetPassword({password, passwordConfirm, resetToken});
+    })
+}
 
 if (bookBtn)
     bookBtn.addEventListener('click', e => {
